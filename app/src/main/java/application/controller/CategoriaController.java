@@ -40,4 +40,9 @@ public class CategoriaComtroller{
 }
 
 @RequestMapping("/update")
-public String update()
+public String update(
+    @RequestParam("id") long id,
+    Model ui){
+
+    Optional<Categoria> categoria = categoriaRepo.findById(id);
+    }
