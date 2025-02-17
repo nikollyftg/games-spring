@@ -22,4 +22,31 @@ public class Categoria{
     @Column (unique=true. nullabel-false)
 
     private String name;
+
+    @OneTomany(mappedBy = "Categoria")
+    private Set<Jogo> jogos = new HashSet<>();
+
+    public long getId(){
+        return id;
+    }
+
+    public void setId(long id){
+        this.id = id;
+    }
+
+    public String getNome(){
+        return nome;
+    }
+
+    public void setNome(String nome){
+        this.nome = nome;
+    }
+
+    public Set<Jogo> getJogos(){
+        return jogos;
+    }
+
+    public void setJogos(Set<jogo> jogos){
+        this.jogos = jogos;
+    } 
 }
