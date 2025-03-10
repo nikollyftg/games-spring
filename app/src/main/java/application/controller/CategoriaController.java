@@ -95,6 +95,7 @@ public String update(
 
             if(categoria.isPresent()){
                 ui.addAttribute("categoria", categoria.get());
+                return "categoria/delete";
             }
 
             return "redirect:/categoria/list";
