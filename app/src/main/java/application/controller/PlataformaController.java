@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import application.model.Plataforma;
 import application.repository.PlataformaRepository;
 
+
 @Controller
 @RequestMapping("/plataforma")
 public class PlataformaController {
@@ -19,72 +20,43 @@ public class PlataformaController {
     @Autowired
     private PlataformaRepository plataformaRepo;
 
-    @RequestMapping("/list")
-    public String list(Model ui) {
+    @GetMapping("/list")
+    public String listPlataformas(Model ui) {
         ui.addAttribute("plataformas", plataformaRepo.findAll());
-        return "plataforma/list";
+        return "plataforma/list"; // Nome da view para listar as plataformas
     }
 
-    @RequestMapping("/insert")
-    public String insert() {
-        return "plataforma/insert";
+    @GetMapping("/insert")
+    public String addPlataformaForm(Model ui) {
+        return "plataformas/insert"; // Nome da view para o formulário de adição
     }
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public String insert(@RequestParam("nome") String nome) {
-        Plataforma plataforma = new Plataforma();
-        plataforma.setNome(nome);
-        plataformaRepo.save(plataforma);
-        return "redirect:/plataforma/list";
+    public String insert(@RequestParam("nome")String nome) {
+        plataformaRepository.save(plataforma);
+        return "redirect:/plataformas/list"; // Redireciona para a lista após adicionar
     }
 
-    @RequestMapping("/update")
-    public String update(
-        @RequestParam("id") long id,
-        Model ui) {
-
-        Optional<Plataforma> plataforma = plataformaRepo.findById(id);
-
-        if (plataforma.isPresent()) {
-            ui.addAttribute("plataforma", plataforma.get());
-            return "plataforma/update";
-        }
-
-        return "redirect:/plataforma/list";
+    @GetMapping("/edit/{id}")
+    public String editPlataformaForm(@PathVariable("id") long id, Model model) {
+        Plataforma plataforma = plataformaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID de plataforma inválido:" + id));
+        model.addAttribute("plataforma", plataforma);
+        return "plataformas/edit"; // Nome da view para o formulário de edição
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public String update(
-        @RequestParam("id") long id,
-        @RequestParam("nome") String nome) {
-
-        Optional<Plataforma> plataforma = plataformaRepo.findById(id);
-
-        if (plataforma.isPresent()) {
-            plataforma.get().setNome(nome);
-            plataformaRepo.save(plataforma.get());
-        }
-        return "redirect:/plataforma/list";
+    @PostMapping("/update/{id}")
+    public String updatePlataforma(@PathVariable("id") long id, @ModelAttribute Plataforma plataforma) {
+        plataforma.setId(id); // Garante que estamos atualizando a plataforma correta
+        plataformaRepository.save(plataforma);
+        return "redirect:/plataformas/list"; // Redireciona para a lista após atualizar
     }
 
-    @RequestMapping("/delete")
-    public String delete(
-        @RequestParam("id") long id,
-        Model ui) {
-
-        Optional<Plataforma> plataforma = plataformaRepo.findById(id);
-
-        if (plataforma.isPresent()) {
-            ui.addAttribute("plataforma", plataforma.get());
-            return "plataforma/delete";
-        }
-
-        return "redirect:/plataforma/list";
-    }
-
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public String delete(@RequestParam("id") long id) {
-        plataformaRepo.deleteById(id);
-        return "redirect:/plataforma/list";
+    @GetMapping("/delete/{id}")
+    public String deletePlataforma(@PathVariable("id") long id) {
+        Plataforma plataforma = plataformaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID de plataforma inválido:" + id));
+        plataformaRepository.delete(plataforma);
+        return "redirect:/plataformas/list"; // Redireciona para a lista após excluir
     }
 }
