@@ -1,63 +1,88 @@
 package application.controller;
-
+ 
 import java.util.Optional;
-
+ 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
+ 
 import application.model.Plataforma;
 import application.repository.PlataformaRepository;
-
+ 
 @Controller
 @RequestMapping("/plataforma")
 public class PlataformaController {
-
     @Autowired
     private PlataformaRepository plataformaRepo;
-
-    @GetMapping("/list")
-    public String listPlataformas(Model ui) {
+ 
+    @RequestMapping("/list")
+    public String list(Model ui) {
         ui.addAttribute("plataformas", plataformaRepo.findAll());
-        return "plataforma/list"; // Certifique-se de que a view exista
+        return "plataforma/list";
     }
-
-    @GetMapping("/insert")
-    public String addPlataformaForm(Model ui) {
-        return "plataforma/insert"; // Certifique-se de que a view exista
+ 
+    @RequestMapping("/insert")
+    public String insert() {
+        return "plataforma/insert";
     }
-
+ 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     public String insert(@RequestParam("nome") String nome) {
         Plataforma plataforma = new Plataforma();
         plataforma.setNome(nome);
+ 
         plataformaRepo.save(plataforma);
-        return "redirect:/plataforma/list"; // Ajustando o caminho
+ 
+        return "redirect:/plataforma/list";
     }
-
-    @GetMapping("/update/{id}")
-    public String update(@PathVariable("id") long id, Model model) {
-        Plataforma plataforma = plataformaRepo.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("ID de plataforma inválido: " + id));
-        model.addAttribute("plataforma", plataforma);
-        return "plataforma/update"; // Ajustando o nome da pasta
+ 
+    @RequestMapping("/update")
+    public String update(@RequestParam("id") long id, Model ui) {
+        Optional<Plataforma> plataforma = plataformaRepo.findById(id);
+ 
+        if(plataforma.isPresent()) {
+            ui.addAttribute("plataforma", plataforma.get());
+            return "plataforma/update";
+        }
+ 
+        return "redirect:/plataforma/list";
     }
-
-    @PostMapping("/update/{id}")
-    public String update(@PathVariable("id") long id, @ModelAttribute Plataforma plataforma) {
-        plataforma.setId(id); // Garante que estamos atualizando a plataforma correta
-        plataformaRepo.save(plataforma);
-        return "redirect:/plataforma/list"; // Ajuste do caminho de redirecionamento
+ 
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public String update(
+        @RequestParam("id") long id,
+        @RequestParam("nome") String nome
+    ) {
+        Optional<Plataforma> plataforma = plataformaRepo.findById(id);
+ 
+        if(plataforma.isPresent()) {
+            plataforma.get().setNome(nome);
+ 
+            plataformaRepo.save(plataforma.get());
+        }
+ 
+        return "redirect:/plataforma/list";
     }
-
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") long id) {
-        Plataforma plataforma = plataformaRepo.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("ID de plataforma inválido: " + id));
-        plataformaRepo.delete(plataforma);
-        return "redirect:/plataforma/list"; // Ajuste do caminho de redirecionamento
+ 
+    @RequestMapping("/delete")
+    public String delete(@RequestParam("id") long id, Model ui) {
+        Optional<Plataforma> plataforma = plataformaRepo.findById(id);
+ 
+        if(plataforma.isPresent()) {
+            ui.addAttribute("plataforma", plataforma.get());
+            return "plataforma/delete";
+        }
+ 
+        return "redirect:/plataforma/list";
+    }
+ 
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public String delete(@RequestParam("id") long id) {
+        plataformaRepo.deleteById(id);
+ 
+        return "redirect:/plataforma/list";
     }
 }
