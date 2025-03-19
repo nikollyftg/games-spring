@@ -18,7 +18,7 @@
        
         
         <button type="submit">Atualizar</button>
-        <a href="/plataformas">Cancelar</a>
+        <a href="/plataforma/list">Cancelar</a>
     </form>
 </body>
 </html>

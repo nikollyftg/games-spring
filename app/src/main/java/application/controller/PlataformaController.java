@@ -34,23 +34,23 @@ public class PlataformaController {
         return "redirect:/plataforma/list"; // Ajustando o caminho
     }
 
-    @GetMapping("/edit/{id}")
-    public String editPlataformaForm(@PathVariable("id") long id, Model model) {
+    @GetMapping("/update/{id}")
+    public String update(@PathVariable("id") long id, Model model) {
         Plataforma plataforma = plataformaRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID de plataforma inválido: " + id));
         model.addAttribute("plataforma", plataforma);
-        return "plataforma/edit"; // Ajustando o nome da pasta
+        return "plataforma/update"; // Ajustando o nome da pasta
     }
 
     @PostMapping("/update/{id}")
-    public String updatePlataforma(@PathVariable("id") long id, @ModelAttribute Plataforma plataforma) {
+    public String update(@PathVariable("id") long id, @ModelAttribute Plataforma plataforma) {
         plataforma.setId(id); // Garante que estamos atualizando a plataforma correta
         plataformaRepo.save(plataforma);
         return "redirect:/plataforma/list"; // Ajuste do caminho de redirecionamento
     }
 
     @GetMapping("/delete/{id}")
-    public String deletePlataforma(@PathVariable("id") long id) {
+    public String delete(@PathVariable("id") long id) {
         Plataforma plataforma = plataformaRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID de plataforma inválido: " + id));
         plataformaRepo.delete(plataforma);
