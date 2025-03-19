@@ -37,7 +37,7 @@
         </c:forEach><br>
         
         <button type="submit">Inserir</button>
-        <a href="/jogos/list">Cancelar</a>
+        <a href="/jogo/list">Cancelar</a>
     </form>
 </body>
 </html>

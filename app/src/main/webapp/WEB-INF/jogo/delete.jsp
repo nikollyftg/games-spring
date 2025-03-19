@@ -13,7 +13,7 @@
     <form action="/jogo/delete" method="post">
         <input type="hidden" name="id" value="${param.id}">
         <button type="submit">Sim, Deletar</button>
-        <a href="/jogos/list">Cancelar</a>
+        <a href="/jogo/list">Cancelar</a>
     </form>
 </body>
 </html>

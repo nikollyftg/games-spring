@@ -16,7 +16,7 @@
         
         
         <button type="submit">Inserir</button>
-        <a href="/plataformas">Cancelar</a>
+        <a href="/plataforma/list">Cancelar</a>
     </form>
 </body>
 </html>
