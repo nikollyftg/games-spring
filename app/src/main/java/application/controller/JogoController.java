@@ -33,7 +33,7 @@ public class JogoController {
     public String list(Model ui) {
         
         ui.addAttribute("jogos", jogoRepo.findAll());
-        return "jogos/list"; // Retorna o nome da view (jogos/list.html)
+        return "jogo/list"; // Retorna o nome da view (jogos/list.html)
     }
 
     @RequestMapping("/insert")
@@ -41,7 +41,7 @@ public class JogoController {
        
         ui.addAttribute("categorias", categoriaRepo.findAll());
          ui.addAttribute("plataformas", plataformaRepo.findAll());
-        return "jogos/insert"; // Retorna o nome da view (jogos/add.html)
+        return "jogo/insert"; // Retorna o nome da view (jogos/add.html)
     }
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
@@ -63,7 +63,7 @@ public class JogoController {
         
 
         jogoRepo.save(jogo);
-        return "redirect:/jogos/list"; // Redireciona para a lista de jogos
+        return "redirect:/jogo/list"; // Redireciona para a lista de jogos
     }
 
     
@@ -80,7 +80,7 @@ public class JogoController {
                 ui.addAttribute("plataformas", plataformaRepo.findAll());
                 return "jogo/update";
             }
-        return "redirect:/jogos/list";
+        return "redirect:/jogo/list";
     }
 
     @RequestMapping (value = "/update", method = RequestMethod.POST)
@@ -126,6 +126,6 @@ public String delete(
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public String delete(@RequestParam("id") long id) {
         jogoRepo.deleteById(id);
-        return "redirect:/jogos/list";
+        return "redirect:/jogo/list";
     }
 }

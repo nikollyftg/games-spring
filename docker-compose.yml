@@ -7,7 +7,7 @@ services:
     container_name: mysql
     restart: always
     environment:
-      MYSQL_DATABASE: application
+      MYSQL_DATABASE: applicationdb
       MYSQL_USER: appuser
       MYSQL_PASSWORD: apppasswd
       MYSQL_ROOT_PASSWORD: rootpass
