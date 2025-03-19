@@ -49,7 +49,7 @@
         <br/>
         
         <button type="submit">Atualizar</button>
-        <a href="/jogo/list">Cancelar</a>
+        <a href="/jogos/list">Cancelar</a>
     </form>
 </body>
 </html>
